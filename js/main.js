@@ -15,7 +15,7 @@ class Timer {
         threadID = setInterval(() => {
             this.event();
             this.now = new Date();
-            if (this.now > thisendDate) {
+            if (this.now > this.endDate) {
                 action();
                 clearInterval(threadID);
             }
@@ -50,7 +50,7 @@ document.querySelectorAll('.btn-success').forEach(e => {
 
 document.querySelector(".trigg").addEventListener('click', function () {
     clearInterval(threadID);
-    let timer = new Timer(parseInt(input.value) * 60000,
+    let timer = new Timer(parseInt(document.querySelector('input').value) * 60000,
         () => clock.innerHTML = timer.getCurrentState());
     timer.start(() => window.alert("Done!"));
 });
