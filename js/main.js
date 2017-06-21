@@ -1,6 +1,4 @@
 const clock = document.querySelector(".pomodoro");
-const input = document.querySelector("input");
-const wrap = (str) => (str.length == 2 ? str : '0' + str);
 let threadID;
 
 class Timer {
@@ -17,7 +15,7 @@ class Timer {
         threadID = setInterval(() => {
             this.event();
             this.now = new Date();
-            if (this.now > this.endDate) {
+            if (this.now > thisendDate) {
                 action();
                 clearInterval(threadID);
             }
@@ -30,16 +28,24 @@ class Timer {
         let minutes = state.getMinutes();
         let seconds = state.getSeconds();
 
-        return [minutes, seconds].map(e => (e.length == 2 ? e : '0' + e)).join(':');
+        return [minutes, seconds].map(e => (e.toString().length === 2 ? e : '0' + e)).join(':');
     }
 }
 
-document.querySelector('.btn-danger').addEventListener('click', () => {
-    if (parseInt(input.value) > 1) input.value = parseInt(input.value) - 1;
+document.querySelectorAll('.btn-danger').forEach(e => {
+    e.addEventListener('click', function() {
+        let groupID = this.parentElement.parentElement.id;
+        let input = document.querySelector('#' + groupID + ' input');
+        if(input.value > 1) input.value = parseInt(input.value) - 1;
+    });
 });
 
-document.querySelector('.btn-success').addEventListener('click', () => {
-    input.value = parseInt(input.value) + 1;
+document.querySelectorAll('.btn-success').forEach(e => {
+    e.addEventListener('click', function() {
+        let groupID = this.parentElement.parentElement.id;
+        let input = document.querySelector('#' + groupID + ' input');
+        input.value = parseInt(input.value) + 1;
+    });
 });
 
 document.querySelector(".trigg").addEventListener('click', function () {

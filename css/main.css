@@ -280,3 +280,13 @@ textarea {
         page-break-after: avoid;
     }
 }
+
+.input-group {
+    width: 10em;
+    display: inline-block;
+    margin: 1em;
+}
+
+.controls {
+    display: flex;
+}
