@@ -92,7 +92,7 @@ class Pomodoro extends Timer {
     }
 
     resume() {
-        power.start();
+        super.start();
     }
 }
 
