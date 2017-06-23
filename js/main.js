@@ -3,22 +3,29 @@ class Timer {
         this.tick = tick;
         this.state = states.inactive;
         this.threadID = null;
+        this.timePassed = 0;
     }
 
     start(time) {
-        if(this.state === states.inactive) this.time = time;
-        this.now = new Date();
-        this.endDate = new Date(this.now.getTime() + this.time);
+        if(this.state === states.pause) {
+            this.endDate = new Date().getTime() + (this.time - this.timePassed);
+        }
+        else {
+            this.time = time;
+            this.endDate = new Date(new Date().getTime() + this.time);
+        }
         this.state = states.active;
 
         return new Promise(resolve => {
             this.threadID = setInterval(() => {
                 this.tick();
                 this.now = new Date();
+                this.timePassed = this.time - (this.endDate - this.now);
                 if (this.now > this.endDate) {
                     // action();
                     clearInterval(this.threadID);
                     this.state = states.inactive;
+                    this.timePassed = 0;
                     resolve();
                 }
             }, 1000);
@@ -29,15 +36,8 @@ class Timer {
         if(this.state === states.inactive) {
             return '00:00';
         }
-        if(this.state === states.pause) {
-            let state = new Date(this.time);
-            let minutes = state.getMinutes();
-            let seconds = state.getSeconds();
 
-            return [minutes, seconds].map(e => (e.toString().length === 2 ? e : '0' + e)).join(':');
-        }
-
-        let state = new Date(this.endDate - this.now);
+        let state = new Date(this.time - this.timePassed);
         let minutes = state.getMinutes();
         let seconds = state.getSeconds();
 
@@ -49,7 +49,12 @@ class Timer {
     pause() {
         this.state = states.pause;
         clearInterval(this.threadID);
-        this.time = this.endDate.getTime() - this.now.getTime();
+        this.timePassed = this.time - (this.endDate - this.now);
+    }
+
+    getPercentage() {
+        if (this.timePassed !== 0) return this.timePassed / this.time;
+        return 0;
     }
 }
 
@@ -105,9 +110,9 @@ const timeFor = {
     work: 0,
     break: 1
 };
-const clock = document.querySelector(".pomodoro");
+const clock = document.querySelector(".clock");
 let timer = new Pomodoro(() => clock.innerText = timer.getCurrentState() + '\n' +
-    (timer.getTimeFor() ? 'break' : 'work'));
+    (timer.getTimeFor() ? 'break' : 'work') + '\n' + Math.floor(timer.getPercentage() * 100));
 
 document.querySelectorAll('.btn-danger').forEach(e => {
     e.addEventListener('click', function() {
@@ -125,7 +130,7 @@ document.querySelectorAll('.btn-success').forEach(e => {
     });
 });
 
-document.querySelector(".trigg").addEventListener('click', async function () {
+document.querySelector(".timer").addEventListener('click', function () {
     if(timer.getState() === states.active) {
         timer.pause();
     }
