@@ -12,6 +12,7 @@
 
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/circle.css">
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         <script
             src="https://code.jquery.com/jquery-3.2.1.min.js"
@@ -23,41 +24,48 @@
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     </head>
-    <body>
+    <body style="background-color: rgb(211, 55, 40)">
         <!-- Add your site or application content here -->
-        <div class="pomodoro">
-            <div class="controls">
-                <div id="work" class="input-group">
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-danger btn-number"  data-type="minus" data-field="quant[2]">
-                        <span class="glyphicon glyphicon-minus"></span>
-                    </button>
-                </span>
-                    <input type="text" name="quant[2]" class="form-control input-number" value="25" min="1" max="100">
-                    <span class="input-group-btn">
-                    <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[2]">
-                        <span class="glyphicon glyphicon-plus"></span>
-                    </button>
-                </span>
+        <img src="http://pomodoro.nl/images/pomodoro-logo-red.svg">
+        <div id="container">
+            <div class="pomodoro">
+                <div class="controls">
+                    <div id="work" class="input-group">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn danger btn-number"  data-type="minus" data-field="quant[2]">
+                                <span class="glyphicon glyphicon-minus"></span>
+                            </button>
+                        </span>
+                                <input type="text" name="quant[2]" class="form-control input-number" value="25" min="1" max="100" disabled>
+                                <span class="input-group-btn">
+                            <button type="button" class="btn success btn-number" data-type="plus" data-field="quant[2]">
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </button>
+                        </span>
+                            </div>
+                            <div id="break" class="input-group">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn danger btn-number"  data-type="minus" data-field="quant[2]">
+                                <span class="glyphicon glyphicon-minus"></span>
+                            </button>
+                        </span>
+                                <input type="text" name="quant[2]" class="form-control input-number" value="5" min="1" max="100" disabled>
+                                <span class="input-group-btn">
+                            <button type="button" class="btn success btn-number" data-type="plus" data-field="quant[2]">
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </button>
+                        </span>
+                    </div>
                 </div>
-                <div id="break" class="input-group">
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-danger btn-number"  data-type="minus" data-field="quant[2]">
-                        <span class="glyphicon glyphicon-minus"></span>
-                    </button>
-                </span>
-                    <input type="text" name="quant[2]" class="form-control input-number" value="5" min="1" max="100">
-                    <span class="input-group-btn">
-                    <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[2]">
-                        <span class="glyphicon glyphicon-plus"></span>
-                    </button>
-                </span>
-                </div>
-            </div>
 
-            <div class="timer">
-                <p class="clock" style="margin: 40px"></p>
-                ffff
+                <!--circle by afuersch-->
+                <div class="c100 p50 big red timer">
+                    <span class="clock">Start!</span>
+                    <div class="slice">
+                        <div class="bar"></div>
+                        <div class="fill"></div>
+                    </div>
+                </div>
             </div>
         </div>
 

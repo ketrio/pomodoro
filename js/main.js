@@ -22,7 +22,6 @@ class Timer {
                 this.now = new Date();
                 this.timePassed = this.time - (this.endDate - this.now);
                 if (this.now > this.endDate) {
-                    // action();
                     clearInterval(this.threadID);
                     this.state = states.inactive;
                     this.timePassed = 0;
@@ -37,11 +36,16 @@ class Timer {
             return '00:00';
         }
 
-        let state = new Date(this.time - this.timePassed);
-        let minutes = state.getMinutes();
-        let seconds = state.getSeconds();
+        const distance = this.time - this.timePassed;
+        let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.ceil((distance % (1000 * 60)) / 1000);
 
-        return [minutes, seconds].map(e => (e.toString().length === 2 ? e : '0' + e)).join(':');
+        if(seconds === 60) {
+            minutes++;
+            seconds = 0;
+        }
+
+        return minutes + ':' + (seconds.toString().length === 2 ? seconds : '0' + seconds);
     }
 
     getState() { return this.state; }
@@ -53,7 +57,7 @@ class Timer {
     }
 
     getPercentage() {
-        if (this.timePassed !== 0) return this.timePassed / this.time;
+        if (this.timePassed !== 0) return Math.floor(this.timePassed / this.time * 100);
         return 0;
     }
 }
@@ -111,10 +115,15 @@ const timeFor = {
     break: 1
 };
 const clock = document.querySelector(".clock");
-let timer = new Pomodoro(() => clock.innerText = timer.getCurrentState() + '\n' +
-    (timer.getTimeFor() ? 'break' : 'work') + '\n' + Math.floor(timer.getPercentage() * 100));
+const timerNode = document.querySelector('.timer');
+let timer = new Pomodoro(() => {
+    clock.innerText = timer.getCurrentState();
+    timerNode.className = timerNode.className.replace(/p[0-9]+/g, 'p' + timer.getPercentage());
+    timerNode.className = timerNode.className.replace(/green|red/g, timer.getTimeFor() ? 'green' : 'red');
+    document.querySelector('html').style.backgroundColor = timer.getTimeFor() ? '#37f53b' : '#d33728';
+});
 
-document.querySelectorAll('.btn-danger').forEach(e => {
+document.querySelectorAll('.danger').forEach(e => {
     e.addEventListener('click', function() {
         let groupID = this.parentElement.parentElement.id;
         let input = document.querySelector('#' + groupID + ' input');
@@ -122,7 +131,7 @@ document.querySelectorAll('.btn-danger').forEach(e => {
     });
 });
 
-document.querySelectorAll('.btn-success').forEach(e => {
+document.querySelectorAll('.success').forEach(e => {
     e.addEventListener('click', function() {
         let groupID = this.parentElement.parentElement.id;
         let input = document.querySelector('#' + groupID + ' input');
@@ -139,7 +148,7 @@ document.querySelector(".timer").addEventListener('click', function () {
             timer.resume();
         }
         else {
-            document.querySelectorAll('button, input').forEach(e => {if(e !== this) e.disabled = true});
+            document.querySelectorAll('button, input').forEach(e => e.style.display = 'none');
             timer.start(parseInt(document.querySelector('#work input').value) * 60000,
                         parseInt(document.querySelector('#break input').value) * 60000);
         }

@@ -290,3 +290,23 @@ textarea {
 .controls {
     display: flex;
 }
+
+#container{
+    position: absolute;
+    top: 50%;
+    margin-top: -200px;
+    left: 0;
+    width: 100%;
+}
+
+.pomodoro {
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 100%;
+}
+
+.btn {
+    color: white;
+    background-color: #4db53c;
+}
